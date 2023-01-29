@@ -141,7 +141,7 @@ label {
   user-select: none;
 }
 
-.finished > h1 {
+.finished > h2 {
   opacity: 0.5;
 }
 
