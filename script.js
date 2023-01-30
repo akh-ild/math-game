@@ -64,7 +64,6 @@ function showCountdown() {
   splashPage.hidden = true;
   countdownStart();
   populateGamePage();
-  showGamePage();
 }
 
 // Display game page
@@ -83,6 +82,7 @@ function countdownStart() {
     index++;
     if (index >= countdownItems.length) {
       clearInterval(interval);
+      setTimeout(showGamePage, 1000);
     }
   }, 1000);
 }
@@ -183,9 +183,7 @@ function addTime() {
 }
 // Stop timer, process results, go to score page
 function checkTime() {
-  console.log(timePlayed);
   if (playerGuessArray.length == questionAmount) {
-    console.log('player guess array: ', playerGuessArray);
     clearInterval(timer);
     // Check for wrong guesses, add penalty time
     equations.forEach((equation, index) => {
@@ -197,7 +195,6 @@ function checkTime() {
       }
     });
     finalTime = timePlayed + penaltyTime;
-    console.log(timePlayed, penaltyTime, finalTime);
     scoresToDOM();
   }
 } 
