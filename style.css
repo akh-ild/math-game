@@ -208,7 +208,7 @@ button:active {
   background-color: var(--primary-color);
 }
 
-.coutndown {
+.countdown {
   margin-top: 45%;
   font-size: 100px;
   text-align: center;
