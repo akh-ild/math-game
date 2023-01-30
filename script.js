@@ -1,6 +1,7 @@
 // Pages
 const countdownPage = document.querySelector('#countdown-page');
 const splashPage = document.querySelector('#splash-page');
+const gamePage = document.querySelector('#game-page');
 
 // Splash page
 const startForm = document.querySelector('#start-form');
@@ -9,6 +10,8 @@ const radioInputs = document.querySelectorAll('input');
 
 // Countdown page
 const countdown = document.querySelector('.countdown');
+// Game page
+const itemContainer = document.querySelector('.item-container');
 
 // Equations
 let questionAmount = 0;
@@ -60,7 +63,14 @@ function showCountdown() {
   countdownPage.hidden = false;
   splashPage.hidden = true;
   countdownStart();
-  createEquations();
+  populateGamePage();
+  setTimeout(showGamePage, 400);
+}
+
+// Display game page
+function showGamePage() {
+  gamePage.hidden = false;
+  countdownPage.hidden = true;
 }
 
 // Displays 3, 2, 1, go!
@@ -113,5 +123,37 @@ function createEquations() {
     equations.push(equationObject);
   }
   shuffle(equations);
-  console.log('equations array', equations)
+}
+
+// Add equations to DOM
+function equationsToDOM() {
+  equations.forEach((equation) => {
+    const item = document.createElement('div');
+    item.classList.add('item');
+    const equationText = document.createElement('h2');
+    equationText.textContent = equation.value;
+    item.appendChild(equationText);
+    itemContainer.appendChild(item);
+  });
+}
+
+// Dynamically adding correct/incorrect equations
+function populateGamePage() {
+  //Reset DOM, set blank space above
+  itemContainer.textContent = '';
+  // Spacer
+  const topSpacer = document.createElement('div');
+  topSpacer.classList.add('height-240');
+  // Selected item
+  const selectedItem = document.createElement('div');
+  selectedItem.classList.add('selected-item');
+  // Append
+  itemContainer.append(topSpacer, selectedItem);
+  // Create equations, built elements in DOM
+  createEquations();
+  equationsToDOM();
+  // Set blank space below
+  const bottomSpacer = document.createElement('div');
+  bottomSpacer.classList.add('height-500');
+  itemContainer.appendChild(bottomSpacer);
 }
