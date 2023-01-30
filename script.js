@@ -16,12 +16,23 @@ const itemContainer = document.querySelector('.item-container');
 // Equations
 let questionAmount = 0;
 let equations = [];
+let playerGuessArray = [];
 
 // Game page
 let firstNumber = 0;
 let secondNumber = 0;
 let equationObject = {};
 const wrongFormat = [];
+
+//Scroll
+let valueY = 0;
+// Time
+let timer;
+let timePlayed = 0;
+let baseTime = 0;
+let penaltyTime = 0;
+let finalTime = 0;
+let finalTimeDisplay = '0.0s';
 
 startForm.addEventListener('click', () => {
   radioContainers.forEach((radioEl) => {
@@ -156,4 +167,14 @@ function populateGamePage() {
   const bottomSpacer = document.createElement('div');
   bottomSpacer.classList.add('height-500');
   itemContainer.appendChild(bottomSpacer);
+}
+
+// Scroll, store user selection in playerGuessArray
+function select(guesstedTrue) {
+  console.log('player guess array:' , playerGuessArray);
+  // Scroll 80 pixels
+  valueY += 80;
+  itemContainer.scroll(0, valueY);
+  // Add player guess to array
+  return playerGuessArray.push(guesstedTrue ? 'true' : 'false'); 
 }
