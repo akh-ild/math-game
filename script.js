@@ -34,20 +34,6 @@ let penaltyTime = 0;
 let finalTime = 0;
 let finalTimeDisplay = '0.0s';
 
-startForm.addEventListener('click', () => {
-  radioContainers.forEach((radioEl) => {
-    // Remove selected label styling
-    radioEl.classList.remove('selected-label');
-    // Add it back if radio input in checked
-    if (radioEl.children[1].checked) {
-      radioEl.classList.add('selected-label');
-    }
-  });
-});
-
-// Event listeners
-startForm.addEventListener('submit', selectQuestionAmount);
-
 // Get the value from selected radio button
 function getRadioValue() {
   let radioValue;
@@ -171,10 +157,60 @@ function populateGamePage() {
 
 // Scroll, store user selection in playerGuessArray
 function select(guesstedTrue) {
-  console.log('player guess array:' , playerGuessArray);
   // Scroll 80 pixels
   valueY += 80;
   itemContainer.scroll(0, valueY);
   // Add player guess to array
   return playerGuessArray.push(guesstedTrue ? 'true' : 'false'); 
 }
+
+// Start timer when game page is clicked
+function startTimer() {
+  // Rest times
+  timePlayed = 0;
+  penaltyTime = 0;
+  finalTime = 0;
+  timer = setInterval(addTime, 100);
+  gamePage.removeEventListener('click', startTimer);
+}
+// Add a tenth of a second to timePlayed
+function addTime() {
+  timePlayed += 0.1;
+  checkTime();
+}
+// Stop timer, process results, go to score page
+function checkTime() {
+  console.log(timePlayed);
+  if (playerGuessArray.length == questionAmount) {
+    console.log('player guess array: ', playerGuessArray);
+    clearInterval(timer);
+    // Check for wrong guesses, add penalty time
+    equations.forEach((equation, index) => {
+      if (equation.evaluated === playerGuessArray[index]) {
+        // Correct guess, no penalty
+      } else {
+        // Incorrect guess, add penalty
+        penaltyTime += 0.5; 
+      }
+    });
+    finalTime = timePlayed + penaltyTime;
+    console.log(timePlayed, penaltyTime, finalTime);
+  }
+} 
+
+
+// Event listeners
+startForm.addEventListener('click', () => {
+  radioContainers.forEach((radioEl) => {
+    // Remove selected label styling
+    radioEl.classList.remove('selected-label');
+    // Add it back if radio input in checked
+    if (radioEl.children[1].checked) {
+      radioEl.classList.add('selected-label');
+    }
+  });
+});
+
+startForm.addEventListener('submit', selectQuestionAmount);
+
+gamePage.addEventListener('click', startTimer);
